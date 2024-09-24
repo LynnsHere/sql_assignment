@@ -36,9 +36,10 @@ CREATE TABLE customer(
     customer_name       VARCHAR(30) NOT NULL,
     customer_discount   INT         NOT NULL,
     CONSTRAINT pri_customerid PRIMARY KEY (customer_id),
-    CONSTRAINT uni_customerid UNIQUE (id)
+    CONSTRAINT uni_customerid UNIQUE (customer_id)
 );
 
+-- Inserting record into "customer" table
 INSERT INTO customer(customer_id, customer_name, customer_discount) VALUES
     ("1GHF2", "Darryl",     0   ),
     ("34FDD", "David",      10  ),
@@ -47,7 +48,8 @@ INSERT INTO customer(customer_id, customer_name, customer_discount) VALUES
 
 
 
-CRATE TABLE sales(
+-- Creating "sales" table
+CREATE TABLE sales(
     Sales_id            INT         NOT NULL,
     Book_id             vARCHAR(30) NOT NULL,
     Date                DATE        NOT NULL,
@@ -58,9 +60,10 @@ CRATE TABLE sales(
     CONSTRAINT fore_bookid  FOREIGN KEY (Book_id)
     REFERENCES book_list(id) ON UPDATE CASCADE ON DELETE CASCADE,
     CONSTRAINT fore_customerid  FOREIGN KEY (Customer_id)
-    REFERENCES customer(customer_id) ON UPDATE CASCADE ON DELETE CASCADE;          
+    REFERENCES customer(customer_id) ON UPDATE CASCADE ON DELETE CASCADE          
 );
 
+-- Inserting record into "saless" table
 INSERT INTO sales(Sales_id, Book_id, Date, Customer_id, Quantity_bought, Total_Cost) VALUES
     (5,     "BB194", "2020-03-03", "1GHF2", 1, 6.99  ),
     (6,     "NC652", "2020-03-03", "34FDD", 2, 10.00 ),
@@ -71,4 +74,62 @@ INSERT INTO sales(Sales_id, Book_id, Date, Customer_id, Quantity_bought, Total_C
     (11,    "CH391", "2020-04-04", "1GHF2", 3, 12.00 ),
     (12,    "TC188", "2020-04-04", "34FDD", 5, 25.00 ),
     (13,    "AD222", "2020-04-04", "34FDD", 2, 20.00 );
+
+
+
+-- Query 7:
+SELECT * FROM book_list;
+
+-- Query 8:
+SELECT * FROM sales 
+LIMIT 5;
+
+-- Query 9:
+SELECT Sales_id, Date FROM sales
+WHERE Customer_id = "1GHF2";
+
+-- Query 10:
+SELECT * FROM customer 
+WHERE customer_name LIKE '%e%';
+
+-- Query 11:
+SELECT * FROM book_list
+ORDER BY id DESC;
+
+-- Query 12:
+SELECT * FROM book_list
+WHERE Fiction = TRUE;
+
+-- Query 13:
+SELECT Sales_id, Book_id FROM sales
+WHERE Total_Cost <= 15;
+
+-- Query 14:
+UPDATE book_list SET Genre = 'Fantasy', Fiction = TRUE
+WHERE id = 'CH391';
+
+-- Query 15:
+SELECT SUM(Total_Cost) AS TotalCostOfBooks
+FROM sales;
+
+-- Query 16:
+SELECT * FROM sales
+WHERE Book_id NOT IN ('NC652', 'PP866');
+
+-- Query 17:
+SELECT * FROM sales
+WHERE Sales_id IN (10, 13);
+
+-- Query 18:
+SELECT * FROM sales
+WHERE Total_Cost BETWEEN 10 AND 20;
+
+-- Query 19:
+DELETE FROM sales
+WHERE Book_id = 'BB194';
+
+-- Query 20:
+SELECT b.Name AS Book_Name, s.Date, s.Quantity_bought, s.Total_Cost
+FROM sales s JOIN book_list b
+ON s.Book_id = b.id;
 
